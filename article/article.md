@@ -4,6 +4,10 @@ A pickleball match, rebuilt in 3D from one broadcast camera.
 
 The pipeline turns ordinary match video into a digital twin: the court, four moving bodies, their paddles and the ball, in real feet and seconds, on a single Mac. It is a step toward a simulator that learned players can play in, and every stage is written up with what was measured, including what failed.
 
+![A ten-second rally rebuilt in 3D, seen from eye height behind the near baseline: four coloured bodies with paddles on a blue court and a ball arcing over the net between them.](./demo-court.mp4)
+
+Ten seconds of one rally, from a spot the broadcast camera never stood. Nothing from the broadcast is drawn here: every pixel comes from the reconstruction.
+
 ## Why
 
 A broadcast shows a match from one fixed angle. Everything a coach or a simulator wants is missing from it: how high the ball was, how far a player reached, where the paddle faced. Tennis research has rebuilt matches from video and trained simulated players on the result. Nobody has published the same for pickleball, where the ball is slower and lighter, the court is small, and most of the game happens within a few feet of the net.
@@ -22,6 +26,10 @@ For a rally, the pipeline produces a scene you can orbit in a browser:
 For the whole match it also produces a table of every detected shot: who hit it, where all four players stood, and where the ball went next.
 
 ## How it works
+
+![The same ten seconds of the rebuilt rally, seen from high behind one baseline, where the broadcast camera stands.](./demo-broadcast.mp4)
+
+The same rally from where the real camera stands, which is the view the pipeline starts from.
 
 **Court first.** The court lines give the camera's position and focal length, so every pixel becomes a line of sight in court feet. Everything else is measured against that.
 

@@ -36,3 +36,4 @@ eval/clips/
 
 # article visuals are kept
 !article/*.png
+!article/*.mp4
