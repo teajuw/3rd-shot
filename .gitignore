@@ -33,3 +33,6 @@ eval/clips/
 *.pt
 *.ckpt
 *.log
+
+# article visuals are kept
+!article/*.png
