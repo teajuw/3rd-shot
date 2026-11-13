@@ -40,6 +40,8 @@ Speed: about 6 hours for 10 minutes of footage with bodies on every second frame
   - `facebookresearch/sam-3d-body` at `b5c765a`, then apply `bodies/patches/sam-3d-body.patch` (runs it on Apple GPUs)
   - `zju3dv/GVHMR` at `ee960bb` (unpatched; `bodies/run_gvhmr.py` adapts it at run time)
 
+`bodies/patches/sam-3d-body.patch` modifies Meta's SAM 3D Body code and quotes a few lines of it; that code remains under Meta's SAM License (see `LICENSE` in their repository). SMPL, SMPL-X and GVHMR have their own licences, some non-commercial.
+
 ## Setup
 
 ```bash
