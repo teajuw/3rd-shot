@@ -1,0 +1,12 @@
+{
+ "description": "v4, events in play only",
+ "target": "code",
+ "pooled": {
+  "event_f1": 0.953,
+  "hit_f1": 0.98,
+  "bounce_f1": 0.914,
+  "tp": 41,
+  "false": 1,
+  "missed": 3
+ }
+}

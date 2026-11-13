@@ -1,0 +1,10 @@
+[
+ {
+  "role": "user",
+  "content": "clip b_158 (9.13 s, 3 labelled events)"
+ },
+ {
+  "role": "assistant",
+  "content": "clip b_158: tp 0, false 0, missed 3\nMATCHED (pred frame, label frame, kind):\nFALSE (predicted, no label):\nMISSED (label, no prediction):\n     26 bounce\n     45 near\n     95 bounce"
+ }
+]

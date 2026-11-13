@@ -1,0 +1,60 @@
+{
+ "current_round": 4,
+ "reps": 1,
+ "goal": {
+  "target": "event_f1",
+  "direction": "higher",
+  "hold": [
+   "hit_f1",
+   "bounce_f1"
+  ]
+ },
+ "approve_each_round": false,
+ "best": {
+  "round": 4,
+  "train_score": 0.875,
+  "test_score": null
+ },
+ "train_ids": [
+  "b_158",
+  "b_404",
+  "b_1095"
+ ],
+ "test_ids": [
+  "b_692",
+  "b_1759",
+  "b_1844",
+  "b_2039"
+ ],
+ "unlabelled_dev": [
+  "b_1422",
+  "b_1882",
+  "b_1994",
+  "b_2133",
+  "b_2459"
+ ],
+ "harness_paths": [
+  "eval/run_eval.py"
+ ],
+ "metrics": [
+  {
+   "id": "event_f1",
+   "kind": "float",
+   "label": "Event F1"
+  },
+  {
+   "id": "hit_f1",
+   "kind": "float"
+  },
+  {
+   "id": "bounce_f1",
+   "kind": "float"
+  },
+  {
+   "id": "timing_abs_frames",
+   "kind": "float",
+   "better": "lower"
+  }
+ ],
+ "note": "No test clip is labelled yet, so every score so far is train-only and directional."
+}

@@ -1,0 +1,63 @@
+{
+  "clip": "b_1095",
+  "count": 14,
+  "done": false,
+  "events": [
+    {
+      "f": 28,
+      "kind": "bounce"
+    },
+    {
+      "f": 48,
+      "kind": "near"
+    },
+    {
+      "f": 80,
+      "kind": "far"
+    },
+    {
+      "f": 116,
+      "kind": "near"
+    },
+    {
+      "f": 171,
+      "kind": "bounce"
+    },
+    {
+      "f": 187,
+      "kind": "far"
+    },
+    {
+      "f": 242,
+      "kind": "bounce"
+    },
+    {
+      "f": 265,
+      "kind": "near"
+    },
+    {
+      "f": 311,
+      "kind": "bounce"
+    },
+    {
+      "f": 326,
+      "kind": "far"
+    },
+    {
+      "f": 375,
+      "kind": "near"
+    },
+    {
+      "f": 416,
+      "kind": "bounce"
+    },
+    {
+      "f": 421,
+      "kind": "far"
+    },
+    {
+      "f": 474,
+      "kind": "bounce"
+    }
+  ]
+}

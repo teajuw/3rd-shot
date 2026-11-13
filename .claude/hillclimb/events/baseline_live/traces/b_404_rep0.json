@@ -1,0 +1,10 @@
+[
+ {
+  "role": "user",
+  "content": "clip b_404 (24.93 s, 27 labelled events)"
+ },
+ {
+  "role": "assistant",
+  "content": "clip b_404: tp 14, false 3, missed 13\nMATCHED (pred frame, label frame, kind):\n    361.5   365 far\n    400.0   401 bounce\n    421.0   422 near\n    494.0   493 bounce\n    511.9   512 far\n    565.9   566 near\n    596.0   595 bounce\n    718.1   719 far\n    750.9   751 near\n    903.7   906 far\n   1128.7  1129 far\n   1153.7  1153 near\n   1210.9  1210 far\n   1238.0  1238 bounce\nFALSE (predicted, no label):\n  {\"f\": 857.5800000000027, \"kind\": \"bounce\"}\n  {\"f\": 956.0999999999999, \"kind\": \"near\"}\n  {\"f\": 1088.3400000000013, \"kind\": \"bounce\"}\nMISSED (label, no prediction):\n    609 far\n    654 near\n    701 bounce\n    797 bounce\n    800 far\n    857 near\n    900 bounce\n    957 bounce\n    975 near\n   1026 bounce\n   1044 far\n   1088 near\n   1149 bounce"
+ }
+]

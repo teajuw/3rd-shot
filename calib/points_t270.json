@@ -1,0 +1,17 @@
+{
+  "_note": "Rough hand marks (pixels, 1920x1080) on frames/calib/t270.png. Court marks only seed the fit; stage 2 refines against the painted lines.",
+  "court": {
+    "near_L": [392, 883], "near_C": [963, 882], "near_R": [1537, 883],
+    "nnvz_L": [470, 651], "nnvz_C": [962, 651], "nnvz_R": [1453, 651],
+    "fnvz_L": [527, 484], "fnvz_C": [962, 484], "fnvz_R": [1398, 484],
+    "far_L": [567, 342], "far_C": [960, 342], "far_R": [1352, 342]
+  },
+  "net": {
+    "net_post_L": [437, 425], "net_C": [962, 433], "net_post_R": [1487, 425]
+  },
+  "players": {
+    "far_left": {"feet": [868, 466], "head": [893, 226]},
+    "far_right": {"feet": [1160, 466], "head": [1166, 268]},
+    "near_left": {"feet": [806, 790], "head": [836, 492]}
+  }
+}

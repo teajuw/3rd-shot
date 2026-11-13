@@ -1,0 +1,197 @@
+{
+ "seed": 8,
+ "shots_total": 780,
+ "shots_with_target": 659,
+ "clips": 95,
+ "by_target_kind": {
+  "bounce": 402,
+  "volley": 257
+ },
+ "models": {
+  "uniform": {
+   "log_likelihood_per_shot": -6.59,
+   "gain_over_frequency": -0.759,
+   "gain_90pct_interval": [
+    -0.817,
+    -0.704
+   ],
+   "top1_zone_pct": 9.1,
+   "top3_zone_pct": 32.3,
+   "calibration_error": 0.023,
+   "gain_by_target_kind": {
+    "bounce": -0.497,
+    "volley": -1.169
+   },
+   "widths_chosen": [
+    [
+     2.0,
+     1.0
+    ],
+    [
+     2.0,
+     1.0
+    ],
+    [
+     2.0,
+     1.0
+    ],
+    [
+     2.0,
+     1.0
+    ],
+    [
+     2.0,
+     1.0
+    ]
+   ]
+  },
+  "frequency": {
+   "log_likelihood_per_shot": -5.831,
+   "gain_over_frequency": 0.0,
+   "gain_90pct_interval": [
+    0.0,
+    0.0
+   ],
+   "top1_zone_pct": 20.8,
+   "top3_zone_pct": 41.2,
+   "calibration_error": 0.029,
+   "gain_by_target_kind": {
+    "bounce": 0.0,
+    "volley": 0.0
+   },
+   "widths_chosen": [
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ]
+   ]
+  },
+  "position": {
+   "log_likelihood_per_shot": -5.716,
+   "gain_over_frequency": 0.115,
+   "gain_90pct_interval": [
+    0.077,
+    0.16
+   ],
+   "top1_zone_pct": 21.1,
+   "top3_zone_pct": 49.7,
+   "calibration_error": 0.019,
+   "gain_by_target_kind": {
+    "bounce": 0.182,
+    "volley": 0.01
+   },
+   "widths_chosen": [
+    [
+     1.0,
+     0.5
+    ],
+    [
+     1.5,
+     0.5
+    ],
+    [
+     1.0,
+     0.5
+    ],
+    [
+     1.0,
+     0.5
+    ],
+    [
+     1.5,
+     0.5
+    ]
+   ]
+  },
+  "+ stroke": {
+   "log_likelihood_per_shot": -5.68,
+   "gain_over_frequency": 0.151,
+   "gain_90pct_interval": [
+    0.106,
+    0.191
+   ],
+   "top1_zone_pct": 20.1,
+   "top3_zone_pct": 47.7,
+   "calibration_error": 0.02,
+   "gain_by_target_kind": {
+    "bounce": 0.242,
+    "volley": 0.009
+   },
+   "widths_chosen": [
+    [
+     1.5,
+     0.5
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.5,
+     0.5
+    ],
+    [
+     1.5,
+     0.5
+    ],
+    [
+     1.0,
+     1.0
+    ]
+   ]
+  },
+  "+ opponents": {
+   "log_likelihood_per_shot": -5.336,
+   "gain_over_frequency": 0.495,
+   "gain_90pct_interval": [
+    0.451,
+    0.539
+   ],
+   "top1_zone_pct": 27.3,
+   "top3_zone_pct": 61.4,
+   "calibration_error": 0.024,
+   "gain_by_target_kind": {
+    "bounce": 0.566,
+    "volley": 0.384
+   },
+   "widths_chosen": [
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0
+    ]
+   ]
+  }
+ }
+}

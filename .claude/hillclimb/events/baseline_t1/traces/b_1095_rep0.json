@@ -1,0 +1,10 @@
+[
+ {
+  "role": "user",
+  "content": "clip b_1095 (8.23 s, 14 labelled events)"
+ },
+ {
+  "role": "assistant",
+  "content": "clip b_1095: tp 8, false 2, missed 6\nMATCHED (pred frame, label frame, kind):\n     47.8    48 near\n     78.8    80 far\n    115.9   116 near\n    169.9   171 bounce\n    186.7   187 far\n    242.0   242 bounce\n    309.5   311 bounce\n    325.9   326 far\nFALSE (predicted, no label):\n  {\"f\": 247.26000000001227, \"kind\": \"near\"}\n  {\"f\": 420.30000000000683, \"kind\": \"near\"}\nMISSED (label, no prediction):\n     28 bounce\n    265 near\n    375 near\n    416 bounce\n    421 far\n    474 bounce"
+ }
+]

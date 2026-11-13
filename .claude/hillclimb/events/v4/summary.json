@@ -1,0 +1,12 @@
+{
+ "description": "v3 + velocities measured inside one flight (short hops before a hit)",
+ "target": "code",
+ "pooled": {
+  "event_f1": 0.875,
+  "hit_f1": 0.9,
+  "bounce_f1": 0.846,
+  "tp": 49,
+  "false": 5,
+  "missed": 9
+ }
+}

@@ -1,0 +1,101 @@
+{
+ "_note": "Events for the dink exchange at 20.3-33.0 s of rally_267 (second point of the shot). Times (index = unique 50 Hz sample) come from the automatic breakpoints in segment.py; the hit/bounce labels and hitters were assigned by hand from the breakpoint table (image velocity before/after, nearest wrist) and the rules of play. Index 1225 is a bounce hidden behind a player: its time is a guess and it has no pixel. Hit times were then moved to where the ball's sideways image motion reverses, or to the middle of the detection gap there (the ball is usually hidden at contact). The final lob after 31.2 s is left out: its events could not be labelled with confidence.",
+ "events": [
+  {
+   "index": 1016,
+   "kind": "bounce"
+  },
+  {
+   "index": 1030,
+   "kind": "hit",
+   "player": 0
+  },
+  {
+   "index": 1071,
+   "kind": "bounce"
+  },
+  {
+   "index": 1084,
+   "kind": "hit",
+   "player": 3
+  },
+  {
+   "index": 1123,
+   "kind": "bounce"
+  },
+  {
+   "index": 1127,
+   "kind": "hit",
+   "player": 1
+  },
+  {
+   "index": 1172,
+   "kind": "bounce"
+  },
+  {
+   "index": 1185,
+   "kind": "hit",
+   "player": 3
+  },
+  {
+   "index": 1225,
+   "kind": "bounce",
+   "hidden": true
+  },
+  {
+   "index": 1231,
+   "kind": "hit",
+   "player": 1
+  },
+  {
+   "index": 1279,
+   "kind": "bounce"
+  },
+  {
+   "index": 1296,
+   "kind": "hit",
+   "player": 3
+  },
+  {
+   "index": 1334,
+   "kind": "bounce"
+  },
+  {
+   "index": 1339,
+   "kind": "hit",
+   "player": 1
+  },
+  {
+   "index": 1384,
+   "kind": "bounce"
+  },
+  {
+   "index": 1401,
+   "kind": "hit",
+   "player": 3
+  },
+  {
+   "index": 1438,
+   "kind": "hit",
+   "player": 1
+  },
+  {
+   "index": 1480,
+   "kind": "bounce"
+  },
+  {
+   "index": 1494,
+   "kind": "hit",
+   "player": 3
+  },
+  {
+   "index": 1536,
+   "kind": "bounce"
+  },
+  {
+   "index": 1561,
+   "kind": "hit",
+   "player": 1
+  }
+ ]
+}

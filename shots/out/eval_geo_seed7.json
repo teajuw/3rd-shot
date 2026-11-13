@@ -1,0 +1,38 @@
+{
+ "xy": {
+  "log_likelihood_per_shot": -5.353,
+  "gain_over_xy": 0.0,
+  "gain_90pct_interval": [
+   0.0,
+   0.0
+  ],
+  "by_kind": {
+   "bounce": 0.0,
+   "volley": 0.0
+  }
+ },
+ "ray": {
+  "log_likelihood_per_shot": -5.526,
+  "gain_over_xy": -0.173,
+  "gain_90pct_interval": [
+   -0.221,
+   -0.131
+  ],
+  "by_kind": {
+   "bounce": -0.124,
+   "volley": -0.25
+  }
+ },
+ "mix": {
+  "log_likelihood_per_shot": -5.37,
+  "gain_over_xy": -0.017,
+  "gain_90pct_interval": [
+   -0.039,
+   0.006
+  ],
+  "by_kind": {
+   "bounce": 0.016,
+   "volley": -0.068
+  }
+ }
+}

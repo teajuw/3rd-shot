@@ -1,0 +1,10 @@
+[
+ {
+  "role": "user",
+  "content": "clip b_692 (19.4 s, 7 labelled events)"
+ },
+ {
+  "role": "assistant",
+  "content": "clip b_692: tp 3, false 2, missed 4\nMATCHED (pred frame, label frame, kind):\n    935.5   936 bounce\n    953.9   953 near\n   1029.2  1026 far\nFALSE (predicted, no label):\n  {\"f\": 896.1000000000065, \"kind\": \"far\"}\n  {\"f\": 1078.379999999996, \"kind\": \"near\"}\nMISSED (label, no prediction):\n   1009 bounce\n   1084 near\n   1121 bounce\n   1147 near"
+ }
+]

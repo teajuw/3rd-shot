@@ -1,0 +1,11 @@
+[project]
+name = "pickleball-twin"
+version = "0.0.1"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "numpy",
+    "scipy",
+    "opencv-python-headless",
+    "ultralytics>=8.4.211",
+    "matplotlib>=3.11.2",
+]

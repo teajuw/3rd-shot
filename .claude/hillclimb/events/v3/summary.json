@@ -1,0 +1,12 @@
+{
+ "description": "v2 + sound alone is not a hit when no ball is tracked nearby",
+ "target": "code",
+ "pooled": {
+  "event_f1": 0.855,
+  "hit_f1": 0.9,
+  "bounce_f1": 0.8,
+  "tp": 47,
+  "false": 5,
+  "missed": 11
+ }
+}

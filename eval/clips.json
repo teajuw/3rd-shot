@@ -1,0 +1,103 @@
+{
+ "video": "IpUxCoBHg_g",
+ "fps": 60,
+ "note": "12 baseline-camera shots drawn at random (batch seed 2026). Split into dev and test at random (seed 7). Clip frame k is video frame start_frame + k. 2026-11-12: b_158 and b_404 were labelled first and their labels were read while developing the decoder, so they moved from test to dev. Test is now b_692, b_1759, b_1844, b_2039 (still a random draw; unlabelled and unread).",
+ "clips": [
+  {
+   "id": "b_158",
+   "file": "b_158.mp4",
+   "start_frame": 9540,
+   "frames": 548,
+   "duration_s": 9.13,
+   "split": "dev"
+  },
+  {
+   "id": "b_404",
+   "file": "b_404.mp4",
+   "start_frame": 24250,
+   "frames": 1496,
+   "duration_s": 24.93,
+   "split": "dev"
+  },
+  {
+   "id": "b_692",
+   "file": "b_692.mp4",
+   "start_frame": 41541,
+   "frames": 1164,
+   "duration_s": 19.4,
+   "split": "test"
+  },
+  {
+   "id": "b_1095",
+   "file": "b_1095.mp4",
+   "start_frame": 65713,
+   "frames": 494,
+   "duration_s": 8.23,
+   "split": "dev"
+  },
+  {
+   "id": "b_1422",
+   "file": "b_1422.mp4",
+   "start_frame": 85376,
+   "frames": 1580,
+   "duration_s": 26.33,
+   "split": "dev"
+  },
+  {
+   "id": "b_1759",
+   "file": "b_1759.mp4",
+   "start_frame": 105558,
+   "frames": 1081,
+   "duration_s": 18.02,
+   "split": "test"
+  },
+  {
+   "id": "b_1844",
+   "file": "b_1844.mp4",
+   "start_frame": 110657,
+   "frames": 857,
+   "duration_s": 14.28,
+   "split": "test"
+  },
+  {
+   "id": "b_1882",
+   "file": "b_1882.mp4",
+   "start_frame": 112938,
+   "frames": 530,
+   "duration_s": 8.83,
+   "split": "dev"
+  },
+  {
+   "id": "b_1994",
+   "file": "b_1994.mp4",
+   "start_frame": 119646,
+   "frames": 520,
+   "duration_s": 8.67,
+   "split": "dev"
+  },
+  {
+   "id": "b_2039",
+   "file": "b_2039.mp4",
+   "start_frame": 122354,
+   "frames": 530,
+   "duration_s": 8.83,
+   "split": "test"
+  },
+  {
+   "id": "b_2133",
+   "file": "b_2133.mp4",
+   "start_frame": 128027,
+   "frames": 479,
+   "duration_s": 7.98,
+   "split": "dev"
+  },
+  {
+   "id": "b_2459",
+   "file": "b_2459.mp4",
+   "start_frame": 147546,
+   "frames": 716,
+   "duration_s": 11.93,
+   "split": "dev"
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+ "description": "order of play: bounces on opposite sides need a hit between; hit into own side is cheap",
+ "target": "code",
+ "pooled": {
+  "event_f1": 0.842,
+  "hit_f1": 0.875,
+  "bounce_f1": 0.8,
+  "tp": 48,
+  "false": 8,
+  "missed": 10
+ }
+}

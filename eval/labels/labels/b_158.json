@@ -1,0 +1,55 @@
+{
+  "clip": "b_158",
+  "count": 12,
+  "done": true,
+  "events": [
+    {
+      "f": 26,
+      "kind": "bounce"
+    },
+    {
+      "f": 45,
+      "kind": "near"
+    },
+    {
+      "f": 95,
+      "kind": "bounce"
+    },
+    {
+      "f": 96,
+      "kind": "end"
+    },
+    {
+      "f": 133,
+      "kind": "bounce"
+    },
+    {
+      "f": 155,
+      "kind": "near"
+    },
+    {
+      "f": 223,
+      "kind": "bounce"
+    },
+    {
+      "f": 265,
+      "kind": "bounce"
+    },
+    {
+      "f": 288,
+      "kind": "far"
+    },
+    {
+      "f": 291,
+      "kind": "bounce"
+    },
+    {
+      "f": 389,
+      "kind": "bounce"
+    },
+    {
+      "f": 472,
+      "kind": "bounce"
+    }
+  ]
+}

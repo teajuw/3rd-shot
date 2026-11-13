@@ -1,0 +1,73 @@
+{
+ "frames": 900,
+ "fps_processed": 30.0,
+ "person_frames": 3599,
+ "found_pct": [
+  100.0,
+  100.0,
+  99.9,
+  100.0
+ ],
+ "s_per_frame_mean": 0.575,
+ "s_per_person_frame": 0.144,
+ "minutes_per_video_minute_4_players_50fps": 28.7,
+ "minutes_per_video_minute_4_players_25fps": 14.4,
+ "players": [
+  {
+   "name": "near-left",
+   "box_height_px": 314,
+   "across_court_diff_ft_median": 0.39,
+   "depth_diff_ft_median": 12.68,
+   "depth_diff_ft_p90": 16.37,
+   "depth_bias_ft": -12.68,
+   "depth_jitter_ft": 0.73,
+   "ankle_height_ft_median": 3.71,
+   "joint_accel_rms_m_s2": 285.3,
+   "body_height_m_median": 1.57,
+   "shape_std": 0.0,
+   "scale_std": 0.0
+  },
+  {
+   "name": "near-right",
+   "box_height_px": 303,
+   "across_court_diff_ft_median": 0.41,
+   "depth_diff_ft_median": 9.74,
+   "depth_diff_ft_p90": 13.66,
+   "depth_bias_ft": -9.74,
+   "depth_jitter_ft": 0.94,
+   "ankle_height_ft_median": 3.27,
+   "joint_accel_rms_m_s2": 369.0,
+   "body_height_m_median": 1.5,
+   "shape_std": 0.0,
+   "scale_std": 0.0
+  },
+  {
+   "name": "far-left",
+   "box_height_px": 217,
+   "across_court_diff_ft_median": 0.2,
+   "depth_diff_ft_median": 8.58,
+   "depth_diff_ft_p90": 11.71,
+   "depth_bias_ft": -8.58,
+   "depth_jitter_ft": 1.69,
+   "ankle_height_ft_median": 2.23,
+   "joint_accel_rms_m_s2": 702.1,
+   "body_height_m_median": 1.4,
+   "shape_std": 0.0,
+   "scale_std": 0.0
+  },
+  {
+   "name": "far-right",
+   "box_height_px": 245,
+   "across_court_diff_ft_median": 0.58,
+   "depth_diff_ft_median": 16.3,
+   "depth_diff_ft_p90": 19.32,
+   "depth_bias_ft": -16.3,
+   "depth_jitter_ft": 1.62,
+   "ankle_height_ft_median": 3.97,
+   "joint_accel_rms_m_s2": 671.9,
+   "body_height_m_median": 1.51,
+   "shape_std": 0.0,
+   "scale_std": 0.0
+  }
+ ]
+}

@@ -1,0 +1,116 @@
+diff --git a/sam_3d_body/models/heads/mhr_head.py b/sam_3d_body/models/heads/mhr_head.py
+index 013fca9..67c3c6d 100644
+--- a/sam_3d_body/models/heads/mhr_head.py
++++ b/sam_3d_body/models/heads/mhr_head.py
+@@ -111,12 +111,11 @@ class MHRHead(nn.Module):
+                 lod=1,
+             )
+         else:
+-            self.mhr = torch.jit.load(
+-                mhr_model_path,
+-                map_location=("cuda" if torch.cuda.is_available() else "cpu"),
+-            )
++            # Local patch: keep the scripted MHR rig on the CPU and out of the module
++            # registry, so model.to("mps") does not move it (it uses float64).
++            self.__dict__["mhr"] = torch.jit.load(mhr_model_path, map_location="cpu")
+ 
+-        for param in self.mhr.parameters():
++        for param in self.__dict__["mhr"].parameters():
+             param.requires_grad = False
+ 
+     def get_zero_pose_init(self, factor=1.0):
+@@ -224,9 +223,14 @@ class MHRHead(nn.Module):
+             # Zero out non-hand parameters
+             model_params[:, self.nonhand_param_idxs] = 0
+ 
+-        curr_skinned_verts, curr_skel_state = self.mhr(
+-            shape_params, model_params, expr_params
++        _dev = model_params.device
++        curr_skinned_verts, curr_skel_state = self.__dict__["mhr"](
++            shape_params.float().cpu(),
++            model_params.float().cpu(),
++            None if expr_params is None else expr_params.float().cpu(),
+         )
++        curr_skinned_verts = curr_skinned_verts.float().to(_dev)
++        curr_skel_state = curr_skel_state.float().to(_dev)
+         curr_joint_coords, curr_joint_quats, _ = torch.split(
+             curr_skel_state, [3, 4, 1], dim=2
+         )
+diff --git a/sam_3d_body/models/meta_arch/sam3d_body.py b/sam_3d_body/models/meta_arch/sam3d_body.py
+index 165106f..8d6409c 100644
+--- a/sam_3d_body/models/meta_arch/sam3d_body.py
++++ b/sam_3d_body/models/meta_arch/sam3d_body.py
+@@ -1031,7 +1031,7 @@ class SAM3DBody(BaseModel):
+                 torch.meshgrid(torch.arange(H), torch.arange(W), indexing="xy"), dim=2
+             )[None, None, :, :, :]
+             .repeat(B, N, 1, 1, 1)
+-            .cuda()
++            .to(batch["img"].device)
+         )  # B x N x H x W x 2
+         meshgrid_xy = (
+             meshgrid_xy / batch["affine_trans"][:, :, None, None, [0, 1], [0, 1]]
+@@ -1243,7 +1243,7 @@ class SAM3DBody(BaseModel):
+         batch_lhand = prepare_batch(
+             flipped_img, transform_hand, left_xyxy, cam_int=cam_int.clone()
+         )
+-        batch_lhand = recursive_to(batch_lhand, "cuda")
++        batch_lhand = recursive_to(batch_lhand, self.device)
+         lhand_output = self.forward_step(batch_lhand, decoder_type="hand")
+ 
+         # Unflip output
+@@ -1279,17 +1279,17 @@ class SAM3DBody(BaseModel):
+         batch_rhand = prepare_batch(
+             img, transform_hand, right_xyxy, cam_int=cam_int.clone()
+         )
+-        batch_rhand = recursive_to(batch_rhand, "cuda")
++        batch_rhand = recursive_to(batch_rhand, self.device)
+         rhand_output = self.forward_step(batch_rhand, decoder_type="hand")
+ 
+         # Step 3. replace hand pose estimation from the body decoder.
+         ## CRITERIA 1: LOCAL WRIST POSE DIFFERENCE
+         joint_rotations = pose_output["mhr"]["joint_global_rots"]
+         ### Get lowarm
+-        lowarm_joint_idxs = torch.LongTensor([76, 40]).cuda()  # left, right
++        lowarm_joint_idxs = torch.LongTensor([76, 40]).to(self.device)  # left, right
+         lowarm_joint_rotations = joint_rotations[:, lowarm_joint_idxs]  # B x 2 x 3 x 3
+         ### Get zero-wrist pose
+-        wrist_twist_joint_idxs = torch.LongTensor([77, 41]).cuda()  # left, right
++        wrist_twist_joint_idxs = torch.LongTensor([77, 41]).to(self.device)  # left, right
+         wrist_zero_rot_pose = (
+             lowarm_joint_rotations
+             @ self.head_pose.joint_rotation[wrist_twist_joint_idxs]
+@@ -1505,11 +1505,11 @@ class SAM3DBody(BaseModel):
+         )[1]
+ 
+         # Get lowarm
+-        lowarm_joint_idxs = torch.LongTensor([76, 40]).cuda()  # left, right
++        lowarm_joint_idxs = torch.LongTensor([76, 40]).to(self.device)  # left, right
+         lowarm_joint_rotations = joint_rotations[:, lowarm_joint_idxs]  # B x 2 x 3 x 3
+ 
+         # Get zero-wrist pose
+-        wrist_twist_joint_idxs = torch.LongTensor([77, 41]).cuda()  # left, right
++        wrist_twist_joint_idxs = torch.LongTensor([77, 41]).to(self.device)  # left, right
+         wrist_zero_rot_pose = (
+             lowarm_joint_rotations
+             @ self.head_pose.joint_rotation[wrist_twist_joint_idxs]
+diff --git a/sam_3d_body/sam_3d_body_estimator.py b/sam_3d_body/sam_3d_body_estimator.py
+index e22652e..40eb2ac 100644
+--- a/sam_3d_body/sam_3d_body_estimator.py
++++ b/sam_3d_body/sam_3d_body_estimator.py
+@@ -94,7 +94,6 @@ class SAM3DBodyEstimator:
+         self.image_embeddings = None
+         self.output = None
+         self.prev_prompt = []
+-        torch.cuda.empty_cache()
+ 
+         if type(img) == str:
+             img = load_image(img, backend="cv2", image_format="bgr")
+@@ -157,7 +156,7 @@ class SAM3DBodyEstimator:
+         batch = prepare_batch(img, self.transform, boxes, masks, masks_score)
+ 
+         #################### Run model inference on an image ####################
+-        batch = recursive_to(batch, "cuda")
++        batch = recursive_to(batch, self.device)
+         self.model._initialize_batch(batch)
+ 
+         # Handle camera intrinsics

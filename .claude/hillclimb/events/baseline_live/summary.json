@@ -1,0 +1,12 @@
+{
+ "description": "baseline, events in play only",
+ "target": "code",
+ "pooled": {
+  "event_f1": 0.62,
+  "hit_f1": 0.682,
+  "bounce_f1": 0.519,
+  "tp": 22,
+  "false": 5,
+  "missed": 22
+ }
+}

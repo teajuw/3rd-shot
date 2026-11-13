@@ -1,0 +1,35 @@
+# environments and caches
+.venv/
+bodies/.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# model weights and body-model files: licensed to the downloader, not redistributable
+models/
+vendor/
+
+# match footage and anything cut or rendered from it
+data/
+eval/clips/
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+*.png
+*.wav
+
+# generated outputs
+*/out/*
+!calib/out/*.json
+!cuts/out/*_shots.json
+!sim/out/*.json
+!shots/out/*.json
+!bodies/out/*_stats.json
+*.npz
+*.npy
+*.bin
+*.b64.txt
+*.pt
+*.ckpt
+*.log

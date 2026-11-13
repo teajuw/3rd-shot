@@ -1,0 +1,162 @@
+{
+ "seed": 13,
+ "flights": 53,
+ "bounce_test": {
+  "train_n": 8,
+  "test_n": 9,
+  "models": {
+   "old": {
+    "params": {
+     "e0": 0.66,
+     "e1": 0.0,
+     "mu": 0.4,
+     "kt": 0.8
+    },
+    "train_px": {
+     "n": 8,
+     "median": 22.53,
+     "mean": 22.87,
+     "p90": 38.03
+    },
+    "test_px": {
+     "n": 9,
+     "median": 18.49,
+     "mean": 28.97,
+     "p90": 55.94
+    }
+   },
+   "old+": {
+    "params": {
+     "e0": 0.6099,
+     "e1": 0.0,
+     "mu": 0.4,
+     "kt": 0.5753
+    },
+    "train_px": {
+     "n": 8,
+     "median": 8.84,
+     "mean": 9.54,
+     "p90": 14.93
+    },
+    "test_px": {
+     "n": 9,
+     "median": 16.54,
+     "mean": 23.58,
+     "p90": 46.25
+    },
+    "test_bounces_better_than_old": "7 of 9"
+   },
+   "new": {
+    "params": {
+     "e0": 0.623,
+     "e1": 0.0,
+     "mu": 1.48,
+     "kt": -1.0
+    },
+    "train_px": {
+     "n": 8,
+     "median": 9.99,
+     "mean": 10.51,
+     "p90": 16.18
+    },
+    "test_px": {
+     "n": 9,
+     "median": 18.32,
+     "mean": 23.41,
+     "p90": 46.11
+    },
+    "test_bounces_better_than_old": "7 of 9"
+   },
+   "new+spin": {
+    "params": {
+     "e0": 0.95,
+     "e1": 0.02,
+     "mu": 0.483,
+     "kt": -1.0
+    },
+    "train_px": {
+     "n": 8,
+     "median": 8.56,
+     "mean": 17.88,
+     "p90": 36.41
+    },
+    "test_px": {
+     "n": 9,
+     "median": 9.45,
+     "mean": 10.87,
+     "p90": 18.01
+    },
+    "test_bounces_better_than_old": "9 of 9"
+   }
+  },
+  "incoming_fit_rms_px": {
+   "plain": {
+    "n": 17,
+    "median": 3.64,
+    "mean": 5.44,
+    "p90": 13.14
+   },
+   "spin": {
+    "n": 17,
+    "median": 1.96,
+    "mean": 2.98,
+    "p90": 6.55
+   }
+  },
+  "impact_speed_ft_s": {
+   "n": 17,
+   "median": 14.93,
+   "mean": 15.03,
+   "p90": 16.6
+  }
+ },
+ "landing_test": {
+  "train_n": 12,
+  "test_n": 13,
+  "cd_fitted_on_train": 0.27,
+  "models": {
+   "old (Cd 0.33, no spin)": {
+    "time_error_ms": {
+     "n": 13,
+     "median": 172.91,
+     "mean": 176.89,
+     "p90": 347.24
+    },
+    "pixel_error": {
+     "n": 13,
+     "median": 88.12,
+     "mean": 158.06,
+     "p90": 318.16
+    }
+   },
+   "drag fitted": {
+    "time_error_ms": {
+     "n": 13,
+     "median": 211.23,
+     "mean": 184.0,
+     "p90": 327.31
+    },
+    "pixel_error": {
+     "n": 13,
+     "median": 105.43,
+     "mean": 157.4,
+     "p90": 306.66
+    }
+   },
+   "with spin": {
+    "time_error_ms": {
+     "n": 13,
+     "median": 144.06,
+     "mean": 171.6,
+     "p90": 342.05
+    },
+    "pixel_error": {
+     "n": 13,
+     "median": 77.33,
+     "mean": 173.43,
+     "p90": 431.15
+    }
+   }
+  }
+ }
+}
