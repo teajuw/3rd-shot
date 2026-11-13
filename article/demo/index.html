@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3rd-shot demo</title>
+<!-- On trevorju.dev this picks up the site's colours and fonts; opened on its own, the fallbacks below apply. -->
+<link rel="stylesheet" href="/assets/tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg,#faf9f5);color:var(--ink,#141413);font-family:var(--ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:15px;line-height:1.45}
+#demo{padding:1px 0 2px;display:flex;flex-direction:column;gap:10px}
+#stage{position:relative;width:100%;aspect-ratio:16/10;background:#10161b;border-radius:var(--box-radius,3px);overflow:hidden;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%}
+#status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cfd8d3;font-size:14px;padding:16px;text-align:center}
+[hidden]{display:none!important}
+.bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.bar input[type=range]{flex:1 1 180px;min-width:0;accent-color:var(--accent,#c2613f)}
+.bar .lab{font-size:13px;color:var(--ink-2,#5c5b56);margin:0 2px 0 6px}
+.bar .lab:first-child{margin-left:0}
+button{font:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--rule,#e4e1d7);background:var(--raised,#fff);color:var(--ink,#141413);border-radius:var(--box-radius,3px);cursor:pointer}
+button[aria-pressed=true],button.primary{border-color:var(--ink,#141413);box-shadow:inset 0 0 0 1px var(--ink,#141413)}
+button:focus-visible{outline:2px solid var(--accent,#c2613f);outline-offset:2px}
+#time{font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:13px;color:var(--ink-2,#5c5b56);min-width:10ch;text-align:right}
+.key{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--ink-2,#5c5b56)}
+.key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.note{margin:0;font-size:13px;color:var(--ink-2,#5c5b56)}
+</style>
+</head>
+<body>
+<div id="demo">
+  <div id="stage"><div id="status">Loading 5 MB of motion…</div></div>
+  <div class="bar">
+    <button id="play" class="primary">Pause</button>
+    <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Position in the rally">
+    <span id="time">0.0 s</span>
+  </div>
+  <div class="bar">
+    <span class="lab">Speed</span>
+    <button data-speed="1" aria-pressed="true">1×</button><button data-speed="0.5" aria-pressed="false">½×</button><button data-speed="0.25" aria-pressed="false">¼×</button>
+    <span class="lab">View</span>
+    <button data-view="corner">Corner</button><button data-view="broadcast">Broadcast</button><button data-view="side">Side</button><button data-view="top">Top</button><button data-view="far">Far end</button>
+  </div>
+  <div class="key">
+    <span><i style="background:#ffc83c"></i>Near-left</span><span><i style="background:#3cc8ff"></i>Near-right</span>
+    <span><i style="background:#e65ae6"></i>Far-left</span><span><i style="background:#5ae678"></i>Far-right</span><span><i style="background:#d8f03a"></i>Ball</span>
+  </div>
+  <p class="note">Ten seconds of one rally, rebuilt from the broadcast. Drag to orbit, scroll or pinch to zoom. Bodies come from Meta's SAM 3D Body, then steadied and stood on the court; the paddles are inferred, not measured.</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(async function () {
+  const stage = document.getElementById('stage'), status = document.getElementById('status');
+  const fail = (m) => { status.hidden = false; status.textContent = m; };
+  if (!window.THREE) return fail('The 3D library did not load.');
+  let meta, bins;
+  try {
+    const [m, a, b] = await Promise.all([fetch('meta.json'), fetch('near.bin'), fetch('far.bin')]);
+    if (!m.ok || !a.ok || !b.ok) throw new Error('missing file');
+    meta = await m.json();
+    bins = [new Int16Array(await a.arrayBuffer()), new Int16Array(await b.arrayBuffer())];
+  } catch (e) { return fail('Could not load the motion data (' + e.message + ').'); }
+
+  const K = meta.frames, NV = meta.verts, Q = meta.q, DUR = (K - 1) / meta.fps;
+  // court coordinates (x across 0..20, y along 0..44, z up, feet) -> three.js (x-10, z, 22-y)
+  const P = (x, y, z) => new THREE.Vector3(x - 10, z, 22 - y);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  stage.insertBefore(renderer.domElement, status);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x10161b);
+  const camera = new THREE.PerspectiveCamera(30, 1.6, 1, 600);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.maxPolarAngle = Math.PI / 2 - 0.02; controls.minDistance = 8; controls.maxDistance = 250;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x334455, 0.85));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(-20, 50, 30); scene.add(sun);
+
+  // floor, court, lines, net
+  const flat = (w, d, color, y) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshLambertMaterial({ color })); m.rotation.x = -Math.PI / 2; m.position.y = y; return m; };
+  scene.add(flat(70, 100, 0x1d2a44, -0.02)); scene.add(flat(20, 44, 0x2f5fb3, 0));
+  const line = (x0, y0, x1, y1) => { const w = Math.abs(x1 - x0) + 0.17, d = Math.abs(y1 - y0) + 0.17; const m = flat(w, d, 0xffffff, 0.01); const c = P((x0 + x1) / 2, (y0 + y1) / 2, 0); m.position.x = c.x; m.position.z = c.z; scene.add(m); };
+  [[0, 0, 20, 0], [0, 44, 20, 44], [0, 0, 0, 44], [20, 0, 20, 44], [0, 15, 20, 15], [0, 29, 20, 29], [10, 0, 10, 15], [10, 29, 10, 44]].forEach(l => line(...l));
+  const net = new THREE.Mesh(new THREE.PlaneGeometry(22, 2.9), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.28, side: THREE.DoubleSide }));
+  net.position.set(0, 1.45, 0); scene.add(net);
+  const tape = new THREE.Mesh(new THREE.BoxGeometry(22, 0.17, 0.05), new THREE.MeshBasicMaterial({ color: 0xffffff })); tape.position.set(0, 2.9, 0); scene.add(tape);
+
+  // bodies
+  const COL = [0xffc83c, 0x3cc8ff, 0xe65ae6, 0x5ae678];
+  const index = new THREE.BufferAttribute(new Uint16Array(meta.faces), 1);
+  const bodies = COL.map((c) => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(NV * 3), 3)); g.setIndex(index);
+    const mesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: c, roughness: 0.75, metalness: 0 }));
+    mesh.frustumCulled = false; scene.add(mesh); return g;
+  });
+  // paddles: 15.75 in long, 7.9 in wide, 16 mm thick; outline drawn along local x, face normal on local y
+  function paddleOutline(g) {            // g grows the outline slightly, for the edge guard
+    const sh = new THREE.Shape(), hw = 0.055, fw = 0.33 + g, tip = 0.655 + g, x0 = -0.655, sx = -0.27;
+    sh.moveTo(x0, -hw); sh.lineTo(sx, -hw);
+    sh.bezierCurveTo(sx + 0.10, -hw, sx + 0.06, -fw, sx + 0.24, -fw);
+    sh.lineTo(tip - 0.2, -fw); sh.quadraticCurveTo(tip, -fw, tip, -fw + 0.2);
+    sh.lineTo(tip, fw - 0.2); sh.quadraticCurveTo(tip, fw, tip - 0.2, fw);
+    sh.lineTo(sx + 0.24, fw); sh.bezierCurveTo(sx + 0.06, fw, sx + 0.10, hw, sx, hw);
+    sh.lineTo(x0, hw); sh.closePath(); return sh;
+  }
+  function slab(shape, depth, color, rough) {
+    const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 10 });
+    geo.translate(0, 0, -depth / 2); geo.rotateX(Math.PI / 2);
+    return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color, roughness: rough }));
+  }
+  const paddles = COL.map((c) => {
+    const grp = new THREE.Group();
+    const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.058, 0.062, 0.40, 10), new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.9 }));
+    grip.rotation.z = Math.PI / 2; grip.position.x = -0.455; grip.scale.z = 0.8;
+    grp.add(slab(paddleOutline(0.012), 0.036, c, 0.6), slab(paddleOutline(0), 0.052, 0x22282d, 0.55), grip);
+    grp.matrixAutoUpdate = false; grp.visible = !!meta.paddle; scene.add(grp); return grp;
+  });
+  const V3 = (a, b, w, o) => new THREE.Vector3(a[o] + (b[o] - a[o]) * w, a[o + 1] + (b[o + 1] - a[o + 1]) * w, a[o + 2] + (b[o + 2] - a[o + 2]) * w);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), new THREE.MeshBasicMaterial({ color: 0xd8f03a })); ball.visible = false; scene.add(ball);
+
+  const VIEWS = { broadcast: [P(9.84, -90.6, 29.4), P(10, 22, 2), 11.3], corner: [P(-34, -30, 26), P(10, 22, 2), 30], side: [P(-68, 22, 16), P(10, 22, 3), 30], top: [P(10, 21.9, 95), P(10, 22, 0), 30], far: [P(10, 80, 14), P(10, 22, 3), 30] };
+  function setView(name) { const [pos, tgt, fov] = VIEWS[name]; camera.position.copy(pos); controls.target.copy(tgt); camera.fov = fov; camera.updateProjectionMatrix(); controls.update(); }
+  setView('corner');
+
+  function draw(t) {
+    const f = Math.max(0, Math.min(K - 1, t * meta.fps)), k0 = Math.floor(f), k1 = Math.min(K - 1, k0 + 1), w = f - k0;
+    for (let p = 0; p < 4; p++) {
+      const src = bins[p >> 1], base = (p & 1) * K * NV * 3, o0 = base + k0 * NV * 3, o1 = base + k1 * NV * 3;
+      const r0 = meta.roots[p][k0], r1 = meta.roots[p][k1];
+      const rx = r0[0] + (r1[0] - r0[0]) * w - 10, ry = r0[1] + (r1[1] - r0[1]) * w, rz = r0[2] + (r1[2] - r0[2]) * w;
+      const pos = bodies[p].attributes.position.array;
+      for (let i = 0; i < NV * 3; i += 3) {
+        const x = (src[o0 + i] + (src[o1 + i] - src[o0 + i]) * w) / Q, y = (src[o0 + i + 1] + (src[o1 + i + 1] - src[o0 + i + 1]) * w) / Q, z = (src[o0 + i + 2] + (src[o1 + i + 2] - src[o0 + i + 2]) * w) / Q;
+        pos[i] = x + rx; pos[i + 1] = z + rz; pos[i + 2] = 22 - (y + ry);
+      }
+      bodies[p].attributes.position.needsUpdate = true; bodies[p].computeVertexNormals();
+    }
+    if (meta.paddle) for (let p = 0; p < 4; p++) {
+      const a0 = meta.paddle[p][k0], a1 = meta.paddle[p][k1];
+      const c = V3(a0, a1, w, 0), u = V3(a0, a1, w, 3).normalize(), nn = V3(a0, a1, w, 6);
+      nn.addScaledVector(u, -nn.dot(u)).normalize();
+      // court (x, y, z) -> three (x - 10, z, 22 - y); directions map as (x, z, -y)
+      const ex = new THREE.Vector3(u.x, u.z, -u.y), ey = new THREE.Vector3(nn.x, nn.z, -nn.y), ez = new THREE.Vector3().crossVectors(ex, ey);
+      paddles[p].matrix.makeBasis(ex, ey, ez).setPosition(P(c.x, c.y, c.z));
+    }
+    const b0 = meta.ball && meta.ball[k0], b1 = meta.ball && meta.ball[k1];
+    ball.visible = !!(b0 && b1);
+    if (ball.visible) ball.position.copy(P(b0[0] + (b1[0] - b0[0]) * w, b0[1] + (b1[1] - b0[1]) * w, b0[2] + (b1[2] - b0[2]) * w));
+  }
+
+  const seek = document.getElementById('seek'), timeEl = document.getElementById('time'), playBtn = document.getElementById('play');
+  let t = 0, playing = true, speed = 1, last = performance.now();
+  playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? 'Pause' : 'Play'; };
+  seek.oninput = () => { t = seek.value / 1000 * DUR; };
+  document.querySelectorAll('[data-speed]').forEach(b => b.onclick = () => { speed = +b.dataset.speed; document.querySelectorAll('[data-speed]').forEach(o => o.setAttribute('aria-pressed', o === b)); });
+  document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => setView(b.dataset.view));
+  function report() { parent.postMessage({ type: 'demo-height', height: Math.ceil(document.getElementById('demo').getBoundingClientRect().height) }, '*'); }
+  window.addEventListener('resize', report);
+  function resize() { const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+  window.addEventListener('resize', resize); resize();
+  report();
+  status.hidden = true;
+  (function loop(now) {
+    const dt = Math.min(0.1, (now - last) / 1000); last = now;
+    if (playing) { t += dt * speed; if (t > DUR) t = 0; seek.value = Math.round(t / DUR * 1000); }
+    timeEl.textContent = t.toFixed(1) + ' / ' + DUR.toFixed(0) + ' s';
+    draw(t); controls.update(); renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  })(performance.now());
+})();
+</script>
+</body>
+</html>
