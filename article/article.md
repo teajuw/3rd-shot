@@ -27,9 +27,15 @@ For the whole match it also produces a table of every detected shot: who hit it,
 
 ## How it works
 
+![The pipeline as six steps: broadcast video, court calibration, players, ball and sound tracked in 2D, hits and bounces, then the 3D scene and the shot table and model. The first four are measured from the video and the last two are built from those.](./pipeline.svg)
+
 ![The same ten seconds of the rebuilt rally, seen from high behind one baseline, where the broadcast camera stands.](./demo-broadcast.mp4)
 
 The same rally from where the real camera stands, which is the view the pipeline starts from.
+
+The original, for comparison: the same ten seconds run from 4:47 to 4:57 of the PPA Tour's broadcast of the final.
+
+<https://www.youtube.com/watch?v=IpUxCoBHg_g&t=287s&end=297>
 
 **Court first.** The court lines give the camera's position and focal length, so every pixel becomes a line of sight in court feet. Everything else is measured against that.
 
